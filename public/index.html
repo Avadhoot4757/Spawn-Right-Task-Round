@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Task Manager</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 2rem; }
+        .task { padding: 10px; border: 1px solid #ccc; margin-bottom: 5px; }
+        .completed { background-color: #d4edda; }
+        .in-progress { background-color: #fff3cd; }
+        .pending { background-color: #f8d7da; }
+    </style>
+</head>
+<body>
+    <h1>Task Manager</h1>
+
+    <form id="taskForm">
+        <input type="text" id="title" placeholder="Task Title" required />
+        <input type="text" id="description" placeholder="Description" />
+        <button type="submit">Add Task</button>
+    </form>
+
+    <h2>Tasks</h2>
+    <div id="taskList"></div>
+
+    <script>
+        const apiUrl = '/tasks';
+
+        async function fetchTasks() {
+            const res = await fetch(apiUrl);
+            const tasks = await res.json();
+            const taskList = document.getElementById('taskList');
+            taskList.innerHTML = '';
+
+            tasks.forEach(task => {
+                const div = document.createElement('div');
+                div.className = `task ${task.status}`;
+                div.innerHTML = `
+                    <strong>${task.title}</strong> - ${task.status}<br/>
+                    <em>${task.description}</em><br/>
+                    <button onclick="deleteTask('${task.id}')">Delete</button>
+                    <button onclick="nextStatus('${task.id}', '${task.status}')">Next Status</button>
+                `;
+                taskList.appendChild(div);
+            });
+        }
+
+        async function addTask(e) {
+            e.preventDefault();
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('description').value;
+
+            await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, description })
+            });
+
+            document.getElementById('taskForm').reset();
+            fetchTasks();
+        }
+
+        async function deleteTask(id) {
+            await fetch(`${apiUrl}/${id}`, { method: 'DELETE' });
+            fetchTasks();
+        }
+
+        async function nextStatus(id, current) {
+            const statusCycle = ['pending', 'in-progress', 'completed'];
+            const next = statusCycle[(statusCycle.indexOf(current) + 1) % statusCycle.length];
+
+            await fetch(`${apiUrl}/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: next })
+            });
+
+            fetchTasks();
+        }
+
+        document.getElementById('taskForm').addEventListener('submit', addTask);
+        fetchTasks();
+    </script>
+</body>
+</html>

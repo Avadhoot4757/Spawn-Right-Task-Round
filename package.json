@@ -1,0 +1,24 @@
+{
+  "name": "spawn-right-task-round",
+  "version": "1.0.0",
+  "description": "build a basic backend API for a task management application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Avadhoot4757/Spawn-Right-Task-Round.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Avadhoot4757/Spawn-Right-Task-Round/issues"
+  },
+  "homepage": "https://github.com/Avadhoot4757/Spawn-Right-Task-Round#readme",
+  "dependencies": {
+    "express": "^5.1.0",
+    "uuid": "^11.1.0"
+  }
+}
