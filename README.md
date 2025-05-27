@@ -42,7 +42,7 @@ To demonstrate backend development skills by building a RESTful API that allows 
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/task-manager-api.git
+git clone https://github.com/Avadhoot4757/Spawn-Right-Task-Round
 cd task-manager-api
 ```
 
